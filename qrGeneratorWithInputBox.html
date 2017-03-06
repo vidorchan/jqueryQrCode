@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>二维码-Inputbox</title>
+</head>
+<body>
+<input type="text" id="text" value="老婆，我爱你！" style="width:200px;"/>
+<input type="button" value="生成二维码" id="bt" />
+<div id="qrcode" style="margin-top:10px;">
+</div>
+<script type="text/javascript" src="js/jquery-3.1.1.min.js"></script>
+<script type="text/javascript" src="js/excanvas.js"></script>
+<script type="text/javascript" src="js/jquery.qrcode.min.js"></script>
+
+<script type="text/javascript">
+    $(function() {
+        $("#bt").bind("click",
+            function() {
+                $("#qrcode").empty();
+                var text = $("#text").val();
+                $('#qrcode').qrcode({
+                    render: 'table',
+                    text: utf16to8(text),
+                    height: 200,
+                    width: 200,
+                    typeNumber: -1,   //计算模式
+                    correctLevel: 2   //纠错等级
+                });
+            }
+        );
+    });
+    //转码
+    function utf16to8(str) {
+        var out, i, len, c;
+        out = "";
+        len = str.length;
+        for(i = 0; i < len; i++) {
+            c = str.charCodeAt(i);
+            if ((c >= 0x0001) && (c <= 0x007F)) {
+                out += str.charAt(i);
+            } else if (c > 0x07FF) {
+                out += String.fromCharCode(0xE0 | ((c >> 12) & 0x0F));
+                out += String.fromCharCode(0x80 | ((c >>  6) & 0x3F));
+                out += String.fromCharCode(0x80 | ((c >>  0) & 0x3F));
+            } else {
+                out += String.fromCharCode(0xC0 | ((c >>  6) & 0x1F));
+                out += String.fromCharCode(0x80 | ((c >>  0) & 0x3F));
+            }
+        }
+        return out;
+    }
+</script>
+</body>
+</html>
