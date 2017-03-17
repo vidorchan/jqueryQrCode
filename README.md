@@ -1,2 +1,2 @@
 # jqueryQrCode
-#test jenkins build
+#test jenkins build auto
